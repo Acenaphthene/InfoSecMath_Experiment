@@ -62,6 +62,7 @@ BigInteger BigInteger::operator/(const BigInteger& val) const {
   int cmp = this->compareMagnitude(val);
   if (cmp == -1) return BigInteger();
   if (cmp == 0) return BigInteger(1);
+  if (val == BigInteger(2)) return this->Div2();
   BigInteger mod(100000000), r(1), l(1), mid, ttmp, ttmp1 = *this, ttmp2 = val;
   ttmp1.signum = ttmp2.signum = 1;
   int tmp = this->mag.size() - val.mag.size() + 1;
@@ -90,6 +91,7 @@ BigInteger BigInteger::operator%(const BigInteger& val) const {
       return *this + val;
   }
   if (cmp == 0) return BigInteger();
+  if (val == 2) return this->mag[0] & 1;
   BigInteger mod(100000000), r(1), l(1), mid, ttmp, ttmp1 = *this, ttmp2 = val;
   ttmp1.signum = ttmp2.signum = 1;
   int tmp = this->mag.size() - val.mag.size() + 1;

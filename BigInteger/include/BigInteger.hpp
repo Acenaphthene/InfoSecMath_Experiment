@@ -137,3 +137,5 @@ class BigInteger {
 };
 
 BigInteger abs(const BigInteger &);
+BigInteger pow(const BigInteger &, const BigInteger &);
+BigInteger pow(const BigInteger &, const BigInteger &, const BigInteger &);
