@@ -2,7 +2,7 @@
 
 BigInteger::BigInteger() {
   this->signum = 0;
-  this->mag = std::vector<unsigned int>();
+  this->mag = vi();
 }
 
 BigInteger::BigInteger(const char &x) { new (this) BigInteger((long long)x); }
@@ -34,7 +34,7 @@ BigInteger::BigInteger(const long long &x) {
     new (this) BigInteger();
   } else {
     this->signum = x > 0 ? 1 : -1;
-    this->mag = std::vector<unsigned int>();
+    this->mag = vi();
     long long y = x > 0 ? x : -x;
     while (y) {
       this->mag.push_back(y % 100000000ll);
@@ -48,7 +48,7 @@ BigInteger::BigInteger(const unsigned long long &x) {
     new (this) BigInteger();
   } else {
     this->signum = 1;
-    this->mag = std::vector<unsigned int>();
+    this->mag = vi();
     unsigned long long y = x;
     while (y) {
       this->mag.push_back(y % 100000000ull);
@@ -80,7 +80,8 @@ BigInteger::BigInteger(const std::string &x) {
   std::reverse(y.begin(), y.end());
   y = std::string(y.begin() + y.find_first_not_of(' '), y.end());
   int cnt = 1, cur = 0;
-  this->mag = std::vector<unsigned int>();
+  this->mag = vi();
+
   for (auto i : y) {
     cur += cnt * (i - '0');
     cnt *= 10;

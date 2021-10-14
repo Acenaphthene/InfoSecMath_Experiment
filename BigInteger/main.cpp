@@ -5,13 +5,8 @@
 int main(int argc, char **argv) {
   BigInteger a, b;
   std::cin >> a >> b;
-
-  printf("a == b: %s\n", (a == b ? "true" : "false"));
-  printf("a != b: %s\n", (a != b ? "true" : "false"));
-  printf("a >  b: %s\n", (a > b ? "true" : "false"));
-  printf("a <  b: %s\n", (a < b ? "true" : "false"));
-  printf("a >= b: %s\n", (a >= b ? "true" : "false"));
-  printf("a <= b: %s\n", (a <= b ? "true" : "false"));
+  std::cout << a + b << std::endl;
+  std::cout << a - b << std::endl;
 
   return 0;
 }

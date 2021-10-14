@@ -15,7 +15,7 @@ std::ostream& operator<<(std::ostream& os, const BigInteger& x) {
     if (y.signum == -1) os << '-';
     std::reverse(y.mag.begin(), y.mag.end());
     os << y.mag[0];
-    y.mag = std::vector<unsigned int>(y.mag.begin() + 1, y.mag.end());
+    y.mag = vi(y.mag.begin() + 1, y.mag.end());
     for (auto i : y.mag) os << std::setw(8) << std::setfill('0') << i;
   }
   return os;
