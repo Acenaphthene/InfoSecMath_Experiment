@@ -1,5 +1,4 @@
-#ifndef SIFR_BIGINTEGER
-#define SIFR_BIGINTEGER
+#pragma once
 
 #include <algorithm>
 #include <cstring>
@@ -26,6 +25,18 @@ class BigInteger {
     } else {
       std::reverse(this->mag.begin(), this->mag.end());
     }
+  }
+
+  int compareMagnitude(const BigInteger &val) const {
+    std::vector<unsigned int> m1 = this->mag, m2 = val.mag;
+    int len1 = m1.size(), len2 = m2.size();
+    if (len1 < len2) return -1;
+    if (len1 > len2) return 1;
+    for (int i = len1 - 1, a, b; ~i; --i) {
+      a = m1[i], b = m2[i];
+      if (a != b) return (a < b ? -1 : 1);
+    }
+    return 0;
   }
 
  public:
@@ -83,4 +94,4 @@ class BigInteger {
   friend std::ostream &operator<<(std::ostream &, const BigInteger &);
 };
 
-#endif
+BigInteger abs(const BigInteger &);
