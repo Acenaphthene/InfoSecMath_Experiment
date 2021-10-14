@@ -28,6 +28,7 @@ class BigInteger {
     } else {
       std::reverse(this->mag.begin(), this->mag.end());
     }
+    this->mag.shrink_to_fit();
   }
 
   int compareMagnitude(const BigInteger &val) const {

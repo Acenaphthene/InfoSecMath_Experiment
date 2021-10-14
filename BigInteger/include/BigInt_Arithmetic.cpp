@@ -40,6 +40,24 @@ BigInteger BigInteger::operator-(const BigInteger& val) const {
   return ret;
 }
 
+BigInteger BigInteger::operator*(const BigInteger& val) const {
+  BigInteger ret;
+  ret.signum = this->signum * val.signum;
+  if (ret.signum == 0) return BigInteger();
+  int len1 = this->mag.size(), len2 = val.mag.size();
+  ret.mag = vi(len1 + len2);
+  long long tmp;
+  for (int i = 0; i < len1; ++i) {
+    for (int j = 0; j < len2; ++j) {
+      tmp = (long long)this->mag[i] * (long long)val.mag[j] + ret.mag[i + j];
+      ret.mag[i + j] = (int)(tmp % BigInteger::kMod_);
+      ret.mag[i + j + 1] += (int)(tmp / BigInteger::kMod_);
+    }
+  }
+  ret.RemoveZero();
+  return ret;
+}
+
 BigInteger BigInteger::operator+() const { return *this; }
 
 BigInteger BigInteger::operator-() const {
