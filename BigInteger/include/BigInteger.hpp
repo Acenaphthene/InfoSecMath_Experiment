@@ -69,6 +69,18 @@ class BigInteger {
     return ret;
   }
 
+  BigInteger Div2() const {
+    BigInteger ret = *this;
+    int len = this->mag.size(), ichi = 0;
+    for (int i = len - 1; ~i; --i) {
+      ret.mag[i] += ichi * BigInteger::kMod_;
+      ichi = ret.mag[i] & 1;
+      ret.mag[i] >>= 1;
+    }
+    ret.RemoveZero();
+    return ret;
+  }
+
  public:
   // Constructors
   BigInteger();

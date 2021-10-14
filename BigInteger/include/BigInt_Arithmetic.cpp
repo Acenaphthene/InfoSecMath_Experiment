@@ -58,6 +58,29 @@ BigInteger BigInteger::operator*(const BigInteger& val) const {
   return ret;
 }
 
+BigInteger BigInteger::operator/(const BigInteger& val) const {
+  int cmp = this->compareMagnitude(val);
+  if (cmp == -1) return BigInteger();
+  if (cmp == 0) return BigInteger(1);
+  BigInteger mod(100000000), r(1), l(1), mid, ttmp, ttmp1 = *this, ttmp2 = val;
+  ttmp1.signum = ttmp2.signum = 1;
+  int tmp = this->mag.size() - val.mag.size() + 1;
+  while (tmp--) r = r * mod;
+  tmp = 0;
+  while (l < r) {
+    mid = (l + r).Div2();
+    ttmp = ttmp2 * mid;
+    if (ttmp < ttmp1) {
+      l = mid + BigInteger(1);
+    } else {
+      r = mid;
+    }
+  }
+  if (l * ttmp2 > ttmp1) l = l - BigInteger(1);
+  l.signum = this->signum * val.signum;
+  return l;
+}
+
 BigInteger BigInteger::operator+() const { return *this; }
 
 BigInteger BigInteger::operator-() const {
