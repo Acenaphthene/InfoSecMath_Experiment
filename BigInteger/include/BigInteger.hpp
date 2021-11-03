@@ -63,8 +63,12 @@ class BigInteger {
       ret[i] -= b.mag[i];
       if (ret[i] < 0) {
         --ret[i + 1];
-        ret[i] += BigInteger::kMod_;
+        ret[i] += (int)(BigInteger::kMod_);
       }
+    }
+    for (int i = littleIndex; i < bigIndex && ret[i] < 0; ++i) {
+      --ret[i + 1];
+      ret[i] += (int)(BigInteger::kMod_);
     }
     return ret;
   }
