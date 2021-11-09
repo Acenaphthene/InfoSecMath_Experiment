@@ -48,10 +48,16 @@ class BigInteger {
     vi ret = a.mag;
     ret.push_back(0);
     int len = b.mag.size();
-    for (int i = 0; i < len; ++i) {
+    int bigIndex = a.mag.size(), littleIndex = b.mag.size();
+    for (int i = 0; i < littleIndex; ++i) {
       ret[i] += b.mag[i];
       ret[i + 1] += ret[i] / BigInteger::kMod_;
       ret[i] %= BigInteger::kMod_;
+    }
+    for (int i = littleIndex; i < bigIndex && ret[i] >= BigInteger::kMod_;
+         ++i) {
+      ++ret[i + 1];
+      ret[i] -= (int)(BigInteger::kMod_);
     }
     return ret;
   }
@@ -70,18 +76,6 @@ class BigInteger {
       --ret[i + 1];
       ret[i] += (int)(BigInteger::kMod_);
     }
-    return ret;
-  }
-
-  BigInteger Div2() const {
-    BigInteger ret = *this;
-    int len = this->mag.size(), ichi = 0;
-    for (int i = len - 1; ~i; --i) {
-      ret.mag[i] += ichi * BigInteger::kMod_;
-      ichi = ret.mag[i] & 1;
-      ret.mag[i] >>= 1;
-    }
-    ret.RemoveZero();
     return ret;
   }
 

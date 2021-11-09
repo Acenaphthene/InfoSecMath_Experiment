@@ -59,56 +59,43 @@ BigInteger BigInteger::operator*(const BigInteger& val) const {
 }
 
 BigInteger BigInteger::operator/(const BigInteger& val) const {
-  int cmp = this->compareMagnitude(val);
-  if (cmp == -1) return BigInteger();
-  if (cmp == 0) return BigInteger(1);
-  if (val == BigInteger(2)) return this->Div2();
-  BigInteger mod(100000000), r(1), l(1), mid, ttmp, ttmp1 = *this, ttmp2 = val;
-  ttmp1.signum = ttmp2.signum = 1;
-  int tmp = this->mag.size() - val.mag.size() + 1;
-  while (tmp--) r = r * mod;
-  tmp = 0;
-  while (l < r) {
-    mid = (l + r).Div2();
-    ttmp = ttmp2 * mid;
-    if (ttmp < ttmp1) {
-      l = mid + BigInteger(1);
-    } else {
-      r = mid;
+  if (val.signum == 0) throw "Attempted to divide integer by 0.";
+  if (this->signum == 0 || this->compareMagnitude(val) == -1)
+    return BigInteger();
+  BigInteger src = abs(*this), src_v = abs(val), two = BigInteger(2);
+  BigInteger ret_tmp, x, y, ret = BigInteger(0);
+  while (src >= src_v) {
+    x = src_v, y = x * two, ret_tmp = BigInteger(1);
+    while (src >= y) {
+      x = y;
+      y *= two;
+      ret_tmp *= two;
     }
+    ret += ret_tmp;
+    src -= x;
   }
-  if (l * ttmp2 > ttmp1) l = l - BigInteger(1);
-  l.signum = this->signum * val.signum;
-  return l;
+  ret.signum = this->signum * val.signum;
+  if (src.signum != 0 && this->signum != val.signum) ret -= BigInteger(1);
+  return ret;
 }
 
 BigInteger BigInteger::operator%(const BigInteger& val) const {
-  int cmp = this->compareMagnitude(val);
-  if (cmp == -1) {
-    if (this->signum == val.signum)
-      return *this;
-    else
-      return *this + val;
-  }
-  if (cmp == 0) return BigInteger();
-  if (val == 2) return this->mag[0] & 1;
-  BigInteger mod(100000000), r(1), l(1), mid, ttmp, ttmp1 = *this, ttmp2 = val;
-  ttmp1.signum = ttmp2.signum = 1;
-  int tmp = this->mag.size() - val.mag.size() + 1;
-  while (tmp--) r = r * mod;
-  tmp = 0;
-  while (l < r) {
-    mid = (l + r).Div2();
-    ttmp = ttmp2 * mid;
-    if (ttmp < ttmp1) {
-      l = mid + BigInteger(1);
-    } else {
-      r = mid;
+  if (val.signum == 0) throw "Attempted to divide integer by 0.";
+  if (this->signum == 0 || this->compareMagnitude(val) == -1)
+    return BigInteger();
+  BigInteger ret = abs(*this), src_v = abs(val), two = BigInteger(2);
+  BigInteger x, y;
+  while (ret >= src_v) {
+    x = src_v, y = x * two;
+    while (ret >= y) {
+      x = y;
+      y *= two;
     }
+    ret -= x;
   }
-  if (l * ttmp2 > ttmp1) l = l - BigInteger(1);
-  l.signum = this->signum * val.signum;
-  return (*this - l * val) % val;
+  ret.signum = this->signum;
+  if (this->signum != val.signum) ret += val;
+  return ret;
 }
 
 BigInteger BigInteger::operator+() const { return *this; }
